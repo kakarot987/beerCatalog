@@ -1,0 +1,35 @@
+{
+  "name": "beercatalog",
+  "version": "1.0.0",
+  "description": "Service side of beer catalog full stack application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "jwt",
+    "rest api",
+    "mysql"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kakarot987/beerCatalog.git"
+  },
+  "author": "Devrani Mayank",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kakarot987/beerCatalog/issues"
+  },
+  "homepage": "https://github.com/kakarot987/beerCatalog#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.3",
+    "sequelize": "^6.34.0"
+  }
+}
