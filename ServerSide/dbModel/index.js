@@ -26,5 +26,9 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+
+// Import and define the beer details
+db.beer = require("../dbModel/beer")(sequelize, Sequelize);
+
 // Export the db object for use in other parts of the application
 module.exports = db;
