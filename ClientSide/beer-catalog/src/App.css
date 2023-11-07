@@ -1,0 +1,34 @@
+/* App.css */
+.App {
+  text-align: center;
+}
+
+header {
+  background-color: #ffee8d;
+  color: #000000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  font-size: 20px; /* Adjust the font size as needed */
+  padding: 4%; /* Remove the padding to center the logo */
+  margin: 0 auto; /* Add this to center the element */
+  flex: 1; /* Add this to make the logo expand and center itself */
+  text-align: center; /* Center the text inside the logo */
+}
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    text-align: center;
+  }
+}
