@@ -1,16 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import React from 'react';
+import { Container } from 'react-bootstrap';
 
 function Header() {
-    return (
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">My React-Bootstrap App</Navbar.Brand>
-        </Container>
-      </Navbar>
-    );
-  }
+  const containerStyle = {
+    background: '#ffee8d', // dark background color
+    color: '#fff', // text color
+    textAlign: 'center', // center align text
+    padding: '1rem', // add padding for spacing
+  };
+
+  return (
+    <Container style={containerStyle}>
+      <h1>Beer Catalog</h1>
+    </Container>
+  );
+}
 
 
-  export default Header;
-console.log("sick")
+export default Header;
