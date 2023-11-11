@@ -33,8 +33,8 @@
   border-radius: 50%;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
   height: 200px;
-  position: absolute;
   width: 200px;
+  position: absolute;
 }
 
 .bubble:after {
@@ -55,7 +55,6 @@
   top: 5%;
   transform: scale(0.6);
 }
-
 .x2 {
   animation: animateBubble 20s linear infinite, sideWays 4s ease-in-out infinite alternate;
   left: 5%;

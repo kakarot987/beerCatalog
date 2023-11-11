@@ -1,8 +1,10 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
+
 import './BubbleHeader.css'
 const BubbleHeader = () => {
   return (
-    <div id="background-wrap">
+    <Container id="background-wrap">
       <div className="bubble x1"></div>
       <div className="bubble x2"></div>
       <div className="bubble x3"></div>
@@ -13,7 +15,7 @@ const BubbleHeader = () => {
       <div className="bubble x8"></div>
       <div className="bubble x9"></div>
       <div className="bubble x10"></div>
-    </div>
+    </Container>
   );
 };
 
