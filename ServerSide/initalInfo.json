@@ -1,0 +1,77 @@
+{
+    "beers": [
+      {
+        "id": 1,
+        "name": "Kingfisher",
+        "photos": "https://example.com/kingfisher.jpg",
+        "price": 145.0,
+        "description": "The best-selling beer brand in India with a dominant market share. Kingfisher beers enjoy widespread popularity across the Indian masses of beer enthusiasts. Their range spans both lighter and stronger beers, known for a crisp taste with a decent balance of malty and fruity hops. Premium is one of the most popular variants due to its high quality and budget-friendly price.",
+        "rating": 4
+      },
+      {
+        "id": 2,
+        "name": "Budweiser",
+        "photos": "https://example.com/budweiser.jpg",
+        "price": 170.0,
+        "description": "Indisputably one of the most well-known beer brands frequently ordered at bars and bought from thekas. Budweiser features amongst the top choices of Indian beer lovers. The classic variant of Budweiser Premium is a flavorful, medium-bodied American-style pale lager, while the Budweiser Magnum is for those with a fondness for stronger drinks.",
+        "rating": 4
+      },
+      {
+        "id": 3,
+        "name": "Bira 91",
+        "photos": "https://example.com/bira91.jpg",
+        "price": 355.0,
+        "description": "Bira 91 might have entered the Indian beer market relatively recently but quickly rose to fame as one of the biggest players. Known for low bitterness and yummy, spicy taste. The two most popular variants, Bira Blonde and Bira White, offer a rich, unique taste that makes them popular among beer enthusiasts.",
+        "rating": 4
+      },
+      {
+        "id": 4,
+        "name": "Tuborg",
+        "photos": "https://example.com/tuborg.jpg",
+        "price": 90.0,
+        "description": "Tuborg beers are produced by Carlsberg in India and are known for featuring the most premium bottle-fermented lager beers in the country. Tuborg Green is mild and fresh-tasting, with a delicate balance of the aroma of flowers and grains. Tuborg Strong is the more potent variant, launched keeping in mind the preference for stronger beers across Indian consumers.",
+        "rating": 4
+      },
+      {
+        "id": 5,
+        "name": "Carlsberg",
+        "photos": "https://example.com/carlsberg.jpg",
+        "price": 165.0,
+        "description": "With a tagline of 'Probably The Best Beer In The World,' Carlsberg is one of the most popular beer brands and producers in the nation. The best-selling variant, Carlsberg Elephant Strong Super Premium, is highly potent with a rich malty character and a certain dry bitterness, perfect for celebrations.",
+        "rating": 4
+      },
+      {
+        "id": 6,
+        "name": "Foster's",
+        "photos": "https://example.com/fosters.jpg",
+        "price": 120.0,
+        "description": "Foster's Lager Beer is one of the best-selling lager bottled beers across the world. It boasts a light-colored lager style, full malt character, and a clean balance of hop bitterness. Foster's Strong is a great option for those looking for a darker taste and a harder drinking experience.",
+        "rating": 4
+      },
+      {
+        "id": 7,
+        "name": "Heineken",
+        "photos": "https://example.com/heineken.jpg",
+        "price": 200.0,
+        "description": "Heineken has garnered a large fan following in India, perhaps due to its wallet-friendly price thrown in with the stronger, bitterer taste. This perfectly carbonated beer is super smooth to sip on, especially when served with ice. The pale lager beer by Heineken is the best-selling variant globally.",
+        "rating": 4
+      },
+      {
+        "id": 8,
+        "name": "Miller",
+        "photos": "https://example.com/miller.jpg",
+        "price": 160.0,
+        "description": "Miller High Life is a prototypical American-style lager beer with a clear golden body and medium-high carbonation. It boasts a cool, refreshing taste with a decent balance of delicious flavors. Miller Ace is another popular variant with a bolder, sharper taste and higher alcohol content.",
+        "rating": 4
+      },
+      {
+        "id": 9,
+        "name": "Corona",
+        "photos": "https://example.com/corona.jpg",
+        "price": 280.0,
+        "description": "Corona enjoys the position of one of the best-selling beer brands in India and worldwide. Corona Extra is lighter than traditional beers, with a pronounced dryness and a pleasant balance of malt and hop notes. The beer is low on bitterness and has a sweet taste that's easy on the mouth.",
+        "rating": 4
+      }
+    ]
+  }
+  
