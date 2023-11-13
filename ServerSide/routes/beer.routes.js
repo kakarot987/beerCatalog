@@ -13,7 +13,7 @@ module.exports = function(app) {
     });
 
 // Create a new beer
-app.post('/create',
+app.post('/beers/create',
 [
     verifyBeerName.checkDuplicateBeerName
 ], beerController.createBeer);
@@ -24,7 +24,7 @@ app.get('/beers/:id', (req, res, next) => {
   next();  // Call next to proceed to the next middleware or the controller function
 }, beerController.findBeerById);
 
-app.get("/", beerController.findAll);
+app.get("/beers", beerController.findAll);
 
 module.exports = router;
 };
