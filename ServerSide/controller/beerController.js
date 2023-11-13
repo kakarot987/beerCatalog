@@ -57,4 +57,15 @@ const storage = multer.diskStorage({
       res.status(500).json({ message: error.message });
     }
   };
+
+  exports.findAll = async (req, res) => {
+    try {
+      const beers = await Beer.findAll();
+      res.json(beers);
+    } catch (error) {
+      console.error('Error fetching beers:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
     

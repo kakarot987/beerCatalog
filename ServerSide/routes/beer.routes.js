@@ -13,13 +13,18 @@ module.exports = function(app) {
     });
 
 // Create a new beer
-router.post('/create',
+app.post('/create',
 [
     verifyBeerName.checkDuplicateBeerName
 ], beerController.createBeer);
 
 // Find a beer by ID
-router.get('/:id', beerController.findBeerById);
+app.get('/beers/:id', (req, res, next) => {
+  console.log("Inside beer id");
+  next();  // Call next to proceed to the next middleware or the controller function
+}, beerController.findBeerById);
+
+app.get("/", beerController.findAll);
 
 module.exports = router;
 };
