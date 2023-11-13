@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Modal, Button } from 'react-bootstrap';
 import './Cards.css';
+import { fetchCardData } from '../service/CardService';
 
 function Cards() {
-  const cardData = [
-    { title: 'Card 1', content: 'This is the content of Card 1' },
-    { title: 'Card 2', content: 'This is the content of Card 2' },
-    { title: 'Card 3', content: 'This is the content of Card 3' },
-  ];
+  const [cardData, setCardData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data when the component mounts
+    const fetchData = async () => {
+      try {
+        const data = await fetchCardData();
+        setCardData(data);
+      } catch (error) {
+        // Handle error if needed
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures that it runs only once
+
 
   return (
     <Container>
       <div className="row">
         {cardData.map((card, index) => (
           <div key={index} className="col-md-4">
-            <BlogCard title={card.title} content={card.content} />
+            <BlogCard title={card.name} content={card.content} />
           </div>
         ))}
       </div>
@@ -67,8 +79,14 @@ class Front extends React.Component {
 
     return (
       <div className="front">
+       <div className="row">
+      <div className="col-md-4">
         <ImageArea />
+      </div>
+      <div className="col-md-8">
         <MainArea title={title} />
+      </div>
+    </div>
       </div>
     );
   }
@@ -106,7 +124,6 @@ class MainArea extends React.Component {
     return (
       <div className="main-area">
         <div className="blog-post">
-          <p className="date">{new Date().toLocaleDateString()}</p>
           <p className="blog-content">{title}</p>
           <p className="read-more">Hover to read more...</p>
         </div>
