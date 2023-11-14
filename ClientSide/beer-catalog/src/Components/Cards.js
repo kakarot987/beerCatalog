@@ -4,7 +4,7 @@ import { Container, Modal, Button } from 'react-bootstrap';
 import './Cards.css';
 import { fetchCardData } from '../service/CardService';
 import DemoImage from './kingfisher.png';
-import dImage from './0.jpg'
+
 function Cards() {
   const [cardData, setCardData] = useState([]);
 
