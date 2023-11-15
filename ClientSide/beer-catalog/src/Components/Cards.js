@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Modal, Button } from 'react-bootstrap';
 import './Cards.css';
 import { fetchCardData } from '../service/CardService';
-import DemoImage from './kingfisher.png';
 
 function Cards() {
   const [cardData, setCardData] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   useEffect(() => {
     // Fetch data when the component mounts
@@ -22,15 +22,85 @@ function Cards() {
     fetchData();
   }, []); // Empty dependency array ensures that it runs only once
 
+  const toggleFavorites = () => {
+    setShowFavorites(!showFavorites);
+    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
+    console.log(favoriteBeers)
+    {cardData.map((card, index) => (
+      <div key={index} className="col-md-4">
+        <BlogCard title={card.name} price={card.price} rating={card.rating} description={card.description} imageUrl={card.photos} id={card.id}/>
+      </div>
+    ))}
+    const favoriteCards = cardData.filter((card) => favoriteBeers.includes(card.id));
+    console.log(favoriteCards)
+    const filteredCardss = showFavorites ? cardData.filter(card => card.isFavorite) : cardData;
+    console.log(filteredCardss)
 
+  };
+
+  const handleAddNewBeer = () => {
+    // Add your logic for adding a new beer
+    console.log('Adding a new beer');
+  };
+  const checkFavoriteStatus = (cardId) => {
+    // Read favorite status from session storage
+    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
+    return favoriteBeers.includes(cardId);
+  };
+
+  const renderCards = () => {
+    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
+
+    const filteredCardss = cardData.filter((card) => favoriteBeers.includes(card.id));
+
+    return filteredCardss.map((card, index) => (
+      <div key={index} className="col-md-4">
+        <BlogCard
+          title={card.name}
+          price={card.price}
+          rating={card.rating}
+          description={card.description}
+          imageUrl={card.photos}
+          id={card.id}
+          isFavorite={checkFavoriteStatus(card.id)}
+          toggleFavorite={() => toggleFavorites(card.id)}
+        />
+      </div>
+    ));
+    }
   return (
     <Container>
       <div className="row">
         {cardData.map((card, index) => (
           <div key={index} className="col-md-4">
-            <BlogCard title={card.name} price={card.price} rating={card.rating} description={card.description}/>
+            <BlogCard title={card.name} price={card.price} rating={card.rating} description={card.description} imageUrl={card.photos} id={card.id}/>
           </div>
         ))}
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          <Button variant="primary" onClick={toggleFavorites}>
+            {showFavorites ? 'Show All' : 'Show Favorites'}
+          </Button>
+        </div>
+        <div className="col-md-12">
+          <Button variant="success" onClick={handleAddNewBeer}>
+            Add New Beer
+          </Button>
+        </div>
+      </div>
+      <div className="row">
+        {renderCards()}
+        <div className="col-md-12">
+          <Button variant="primary" onClick={toggleFavorites}>
+            {showFavorites ? 'Show All' : 'Show Favoritessss'}
+          </Button>
+        </div>
+        <div className="col-md-12">
+          <Button variant="success" onClick={handleAddNewBeer}>
+            Add New Beer
+          </Button>
+        </div>
       </div>
     </Container>
   );
@@ -39,11 +109,12 @@ function Cards() {
 class BlogCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { flipped: false, showModal: false };
+    this.state = { flipped: false, showModal: false ,isFavorite: false};
     this.flip = this.flip.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
+
 
   flip = () => {
     this.setState({ flipped: !this.state.flipped });
@@ -57,8 +128,31 @@ class BlogCard extends React.Component {
     this.setState({ showModal: false });
   };
 
+  toggleFavorite = () => {
+    const { id } = this.props;
+    this.setState((prevState) => ({
+      isFavorite: !prevState.isFavorite
+    }), () => {
+      console.log('Updated isFavorite:', this.state.isFavorite);
+      // Save the updated favorite status in session storage
+      const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
+      const beerIndex = favoriteBeers.indexOf(id);
+  
+      if (beerIndex !== -1) {
+        // Remove from favorites if already present
+        favoriteBeers.splice(beerIndex, 1);
+      } else {
+        // Add to favorites if not present
+        favoriteBeers.push(id);
+      }
+  
+      sessionStorage.setItem('favoriteBeers', JSON.stringify(favoriteBeers));
+    });
+  };
+  
+
   render() {
-    const { title, price, rating, description} = this.props;
+    const { title, price, rating, description, imageUrl,id} = this.props;
 
     return (
       <div
@@ -66,9 +160,12 @@ class BlogCard extends React.Component {
         onMouseLeave={this.flip}
         className={"card-container" + (this.state.flipped ? " flipped" : "")}
       >
-        <Front title={title} imageUrl={DemoImage} price={price} rating={rating} description={description}/>
+        <Front title={title} imageUrl={imageUrl} price={price} rating={rating} description={description}/>
         <Back title={title}  description={description} handleOpenModal={this.handleOpenModal} />
-        <ModalComponent showModal={this.state.showModal} handleCloseModal={this.handleCloseModal} title={title} imageUrl={DemoImage} price={price} rating={rating} description={description} />
+        <ModalComponent showModal={this.state.showModal} handleCloseModal={this.handleCloseModal}
+         title={title} imageUrl={imageUrl} price={price} rating={rating} description={description} id={id}
+          isFavorite={this.state.isFavorite}
+        toggleFavorite={this.toggleFavorite} />
       </div>
     );
   }
@@ -243,7 +340,8 @@ class FooterArea extends React.Component {
 
 class ModalComponent extends React.Component {
   render() {
-    const { showModal, handleCloseModal, description,title, price, rating, imageUrl } = this.props;
+    const { showModal, handleCloseModal, description,title, price, rating, imageUrl , id, isFavorite, toggleFavorite} = this.props;
+      // Retrieve favorite beers from session storage on component moun
 
     return (
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -264,9 +362,27 @@ class ModalComponent extends React.Component {
 
 <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
   <FooterArea price={price} rating={rating} />
-  <Button variant="primary" onClick={''}>
-    Add to Favorites
-  </Button>
+  <Button
+  variant="primary"
+  onClick={toggleFavorite}
+  style={{
+    color: isFavorite ? 'green' : 'black',
+    backgroundColor: 'transparent',
+    border: 'none',
+    outline: 'none',
+    fontSize: '2.5em',
+    padding: '0',
+    margin: '0',
+    display: 'flex', // Use flex display to align items vertically
+    flexDirection: 'column', // Align items in a column
+    alignItems: 'center', // Center items horizontally
+  }}
+>
+  {isFavorite ? '★' : '☆'} 
+  <p style={{ color: 'grey', fontSize: '0.4em', margin: '0' }}>Favorite</p>
+</Button>
+
+
 </Modal.Footer>
 
       </Modal>

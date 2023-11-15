@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import React from 'react';
 import { Container } from 'react-bootstrap';
+
 function Header() {
   const containerStyle = {
     background: 'inherit',
