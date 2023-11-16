@@ -22,86 +22,62 @@ function Cards() {
     fetchData();
   }, []); // Empty dependency array ensures that it runs only once
 
-  const toggleFavorites = () => {
+    const toggleFavorites = () => {
     setShowFavorites(!showFavorites);
-    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
-    console.log(favoriteBeers)
-    {cardData.map((card, index) => (
-      <div key={index} className="col-md-4">
-        <BlogCard title={card.name} price={card.price} rating={card.rating} description={card.description} imageUrl={card.photos} id={card.id}/>
-      </div>
-    ))}
-    const favoriteCards = cardData.filter((card) => favoriteBeers.includes(card.id));
-    console.log(favoriteCards)
-    const filteredCardss = showFavorites ? cardData.filter(card => card.isFavorite) : cardData;
-    console.log(filteredCardss)
-
   };
+
 
   const handleAddNewBeer = () => {
     // Add your logic for adding a new beer
     console.log('Adding a new beer');
   };
-  const checkFavoriteStatus = (cardId) => {
-    // Read favorite status from session storage
-    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
-    return favoriteBeers.includes(cardId);
-  };
 
-  const renderCards = () => {
-    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
-
-    const filteredCardss = cardData.filter((card) => favoriteBeers.includes(card.id));
-
-    return filteredCardss.map((card, index) => (
-      <div key={index} className="col-md-4">
-        <BlogCard
-          title={card.name}
-          price={card.price}
-          rating={card.rating}
-          description={card.description}
-          imageUrl={card.photos}
-          id={card.id}
-          isFavorite={checkFavoriteStatus(card.id)}
-          toggleFavorite={() => toggleFavorites(card.id)}
-        />
-      </div>
-    ));
-    }
-  return (
+return (
     <Container>
-      <div className="row">
-        {cardData.map((card, index) => (
-          <div key={index} className="col-md-4">
-            <BlogCard title={card.name} price={card.price} rating={card.rating} description={card.description} imageUrl={card.photos} id={card.id}/>
-          </div>
-        ))}
-      </div>
-      <div className="row">
-        <div className="col-md-12">
+        <div className="row">
+        <div className="col-md-6">
           <Button variant="primary" onClick={toggleFavorites}>
             {showFavorites ? 'Show All' : 'Show Favorites'}
           </Button>
         </div>
-        <div className="col-md-12">
+        <div className="col-md-6">
           <Button variant="success" onClick={handleAddNewBeer}>
             Add New Beer
           </Button>
         </div>
       </div>
       <div className="row">
-        {renderCards()}
-        <div className="col-md-12">
-          <Button variant="primary" onClick={toggleFavorites}>
-            {showFavorites ? 'Show All' : 'Show Favoritessss'}
-          </Button>
-        </div>
-        <div className="col-md-12">
-          <Button variant="success" onClick={handleAddNewBeer}>
-            Add New Beer
-          </Button>
-        </div>
+        {showFavorites
+          ? cardData
+              .filter((card) =>
+                JSON.parse(sessionStorage.getItem('favoriteBeers') || []).includes(card.id)
+              )
+              .map((card, index) => (
+                <div key={index} className="col-md-4">
+                  <BlogCard
+                    title={card.name}
+                    price={card.price}
+                    rating={card.rating}
+                    description={card.description}
+                    imageUrl={card.photos}
+                    id={card.id}
+                  />
+                </div>
+              ))
+          : cardData.map((card, index) => (
+              <div key={index} className="col-md-4">
+                <BlogCard
+                  title={card.name}
+                  price={card.price}
+                  rating={card.rating}
+                  description={card.description}
+                  imageUrl={card.photos}
+                  id={card.id}
+                />
+              </div>
+            ))}
       </div>
+    
     </Container>
   );
 }
@@ -113,6 +89,9 @@ class BlogCard extends React.Component {
     this.flip = this.flip.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+  componentDidMount() {
+    this.initializeIsFavoriteState();
   }
 
 
@@ -128,27 +107,40 @@ class BlogCard extends React.Component {
     this.setState({ showModal: false });
   };
 
+  
   toggleFavorite = () => {
     const { id } = this.props;
-    this.setState((prevState) => ({
-      isFavorite: !prevState.isFavorite
-    }), () => {
-      console.log('Updated isFavorite:', this.state.isFavorite);
-      // Save the updated favorite status in session storage
-      const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
-      const beerIndex = favoriteBeers.indexOf(id);
-  
-      if (beerIndex !== -1) {
-        // Remove from favorites if already present
-        favoriteBeers.splice(beerIndex, 1);
-      } else {
-        // Add to favorites if not present
-        favoriteBeers.push(id);
+    this.setState(
+      (prevState) => ({
+        isFavorite: !prevState.isFavorite,
+      }),
+      () => {
+        console.log('Updated isFavorite:', this.state.isFavorite);
+        // Save the updated favorite status in session storage
+        const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
+        const beerIndex = favoriteBeers.indexOf(id);
+
+        if (beerIndex !== -1) {
+          // Remove from favorites if already present
+          favoriteBeers.splice(beerIndex, 1);
+        } else {
+          // Add to favorites if not present
+          favoriteBeers.push(id);
+        }
+
+        sessionStorage.setItem('favoriteBeers', JSON.stringify(favoriteBeers));
       }
-  
-      sessionStorage.setItem('favoriteBeers', JSON.stringify(favoriteBeers));
-    });
+    );
   };
+
+  // Call this method in your component's lifecycle (e.g., componentDidMount)
+  initializeIsFavoriteState = () => {
+    const { id } = this.props;
+    const favoriteBeers = JSON.parse(sessionStorage.getItem('favoriteBeers')) || [];
+    const isFavorite = favoriteBeers.includes(id);
+    this.setState({ isFavorite });
+  };
+  
   
 
   render() {
@@ -161,7 +153,7 @@ class BlogCard extends React.Component {
         className={"card-container" + (this.state.flipped ? " flipped" : "")}
       >
         <Front title={title} imageUrl={imageUrl} price={price} rating={rating} description={description}/>
-        <Back title={title}  description={description} handleOpenModal={this.handleOpenModal} />
+        <Back title={title}  description={description} handleOpenModal={this.handleOpenModal}  isFavorite={this.state.isFavorite}/>
         <ModalComponent showModal={this.state.showModal} handleCloseModal={this.handleCloseModal}
          title={title} imageUrl={imageUrl} price={price} rating={rating} description={description} id={id}
           isFavorite={this.state.isFavorite}
@@ -225,11 +217,12 @@ headerStyle = {
   };
 
   render() {
-    const {title, description, handleOpenModal } = this.props;
+    const {title, description, handleOpenModal ,isFavorite} = this.props;
     const truncatedDescription = this.truncateDescription(description, 15);
 
     return (
       <div className="back">
+          {isFavorite ? '★' : '☆'} 
         <h1 style={this.headerStyle} className="Header">{title}</h1>
         <p style={this.descriptionStyle}>
           {truncatedDescription}
