@@ -15,7 +15,7 @@ const fetchCardData = async () => {
 const addBeer = async (beerData) => {
   try {
     const response = await axios.post(API_ENDPOINT + '/create', beerData);
-    return response.data;
+    return response.status;
   } catch (error) {
     console.error('Error adding beer:', error);
     throw error;

@@ -43,11 +43,16 @@ function Cards() {
 
   const handleAddNewBeer = async () => {
     try {
-      await addBeer(newBeerData);
-      this.fetchData(); // Refresh the card data after adding a new beer
-      handleCloseModal();    
-      console.log('Adding a new beer');
+      const response = await addBeer(newBeerData);
+      console.log('Adding a new beer',response);
+      if (response === 201) {
+        console.log('Added a new beer');
+        handleCloseModal();
 
+        // Beer added successfully, close the modal and refresh the page
+        this.fetchData(); // Refresh the card data after adding a new beer
+        window.location.reload(true); // Reload the page
+      }
     } catch (error) {
       // Handle error if needed
     }
@@ -66,12 +71,17 @@ return (
     <Container>
         <div className="row">
         <div className="col-md-6">
-          <Button variant="primary" onClick={toggleFavorites}>
+          <Button variant="primary" onClick={toggleFavorites}
+            style={{ background: 'none', border: 'none', color: '#808080' }}
+            >
             {showFavorites ? 'Show All' : 'Show Favorites'}
+            
           </Button>
         </div>
         <div className="col-md-6">
-        <Button variant="success" onClick={handleShowModal}>
+        <Button variant="success" onClick={handleShowModal}
+          style={{ background: 'none', border: 'none', color: '#808080' }}
+          >
           Add New Beer
         </Button>
       </div>
@@ -109,12 +119,13 @@ return (
       </div>
      {/* Modal for adding a new beer */}
      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Beer</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* Form for adding a new beer */}
-          <Form>
+  <Modal.Header closeButton>
+    <Modal.Title style={{ color: '#007bff' }}>Add New Beer</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {/* Form for adding a new beer */}
+    <Form>
+
             <Form.Group controlId="formBeerName">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -171,14 +182,20 @@ return (
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleAddNewBeer}>
-            Add Beer
-          </Button>
-        </Modal.Footer>
+        <Modal.Footer style={{ justifyContent: 'center' }}>
+  <Button
+    variant="success"
+    onClick={handleAddNewBeer}
+    style={{
+      border: 'none',
+      backgroundColor: '#4CAF50', // Change the color as needed
+      color: 'white',
+    }}
+  >
+    Add Beer
+  </Button>
+</Modal.Footer>
+
       </Modal>
     </Container>
   );
@@ -324,8 +341,21 @@ headerStyle = {
 
     return (
       <div className="back">
-          {isFavorite ? '★' : '☆'} 
-        <h1 style={this.headerStyle} className="Header">{title}</h1>
+      <div className="row">
+      <h1 style={this.headerStyle} className="Header col-sm-11">{title}</h1>
+
+  <div  style={{
+    color: isFavorite ? 'green' : 'black',
+    backgroundColor: 'transparent',
+    border: 'none',
+    outline: 'none',
+    fontSize: '1.2em',
+    padding: '0',
+    margin: '0',
+    display: 'flex', // Use flex display to align items vertically
+  }} className='col-sm-1'>{isFavorite ? '★' : '☆'}</div>
+</div>
+
         <p style={this.descriptionStyle}>
           {truncatedDescription}
           {description.split(' ').length > 15 && (
