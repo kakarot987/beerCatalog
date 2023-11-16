@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Database setup
 const db = require("./dbModel");
-const Role = db.role;
 
 // Synchronize the database (create tables if they do not exist)
 db.sequelize.sync();
