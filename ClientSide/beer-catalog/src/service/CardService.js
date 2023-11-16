@@ -12,5 +12,14 @@ const fetchCardData = async () => {
     throw error;
   }
 };
+const addBeer = async (beerData) => {
+  try {
+    const response = await axios.post(API_ENDPOINT + '/create', beerData);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding beer:', error);
+    throw error;
+  }
+};
 
-export { fetchCardData };
+export { fetchCardData , addBeer};

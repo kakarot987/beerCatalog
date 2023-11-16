@@ -1,13 +1,20 @@
 import React, { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Modal, Button } from 'react-bootstrap';
+import { Container, Modal, Button,Form  } from 'react-bootstrap';
 import './Cards.css';
-import { fetchCardData } from '../service/CardService';
+import { fetchCardData, addBeer } from '../service/CardService';
 
 function Cards() {
   const [cardData, setCardData] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
+  const [newBeerData, setNewBeerData] = useState({
+    name: '',
+    photos: '',
+    price: 0,
+    description: '',
+    rating: 0,
+  });
   useEffect(() => {
     // Fetch data when the component mounts
     const fetchData = async () => {
@@ -26,11 +33,34 @@ function Cards() {
     setShowFavorites(!showFavorites);
   };
 
-
-  const handleAddNewBeer = () => {
-    // Add your logic for adding a new beer
-    console.log('Adding a new beer');
+  const handleShowModal = () => {
+    setShowModal(true);
   };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleAddNewBeer = async () => {
+    try {
+      await addBeer(newBeerData);
+      this.fetchData(); // Refresh the card data after adding a new beer
+      handleCloseModal();    
+      console.log('Adding a new beer');
+
+    } catch (error) {
+      // Handle error if needed
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewBeerData({
+      ...newBeerData,
+      [name]: value,
+    });
+  };
+
 
 return (
     <Container>
@@ -41,10 +71,10 @@ return (
           </Button>
         </div>
         <div className="col-md-6">
-          <Button variant="success" onClick={handleAddNewBeer}>
-            Add New Beer
-          </Button>
-        </div>
+        <Button variant="success" onClick={handleShowModal}>
+          Add New Beer
+        </Button>
+      </div>
       </div>
       <div className="row">
         {showFavorites
@@ -77,7 +107,79 @@ return (
               </div>
             ))}
       </div>
-    
+     {/* Modal for adding a new beer */}
+     <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add New Beer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Form for adding a new beer */}
+          <Form>
+            <Form.Group controlId="formBeerName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter beer name"
+                name="name"
+                value={newBeerData.name}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBeerPhotos">
+              <Form.Label>Photos URL</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter photos URL"
+                name="photos"
+                value={newBeerData.photos}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBeerPrice">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter beer price"
+                name="price"
+                value={newBeerData.price}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBeerDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Enter beer description"
+                name="description"
+                value={newBeerData.description}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBeerRating">
+              <Form.Label>Rating</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter beer rating"
+                name="rating"
+                value={newBeerData.rating}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleAddNewBeer}>
+            Add Beer
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }
